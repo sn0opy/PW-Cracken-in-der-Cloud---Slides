@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Passwörter cracken in der Cloud</title>
+		<style type="text/css">
+		@font-face {
+			font-family: 'Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('Lato Regular'), local('Lato-Regular'), url(assets/lato.woff2) format('woff2');
+		}
+		@font-face {
+			font-family: 'Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('Lato Bold'), local('Lato-Bold'), url(assets/lato-bold.woff2) format('woff2');
+		}
+		.remark-slide { display: table; border-bottom: 20px solid #00989e; }
+		.remark-slide-content { color: #444; display: table-cell; vertical-align: middle; font-family: 'Lato'; font-size: 150%; }
+		.remark-slide-number { display: none; }
+		.remark-slide-content h1 { color: #00989e; }
+		.remark-slide-content a { color: #00989e; text-decoration: none; }
+		.remark-slide-content li { margin-bottom: 10px; }
+		.remark-slide-content li ul li { margin-bottom: 0px; }
+		.remark-slide-content code { background: #333; color: #FFF; padding: 10px; border-radius: 5px}
+		.remark-slide-content td { vertical-align: top; }
+		.remark-slide-content table { width: 100%;}
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
+# Passwörter cracken in der Cloud
+### von Sascha Ohms
+
+---
+
+# Über mich
+* Sascha Ohms
+* 26 Jahre
+* IBM Notes / Domino Administrator
+* "Hobby-Hacker"
+
+---
+
+# Warum?
+* (warum nicht?)
+* nur-mal-eben-schnell etwas cracken
+* eine Frage des Geldes
+	* Rentabilität 
+	* Profit?
+
+---
+
+# "Cloud"?
+* sogenannte "Computing Instances"
+* diverse Anbieter
+	* cloud.google.com
+	* aws.amazon.com (inkl. GPU!)
+	* rapidswitch.com
+
+---
+
+# Zutaten
+* GPU Instance für maximale Power
+* aktuelle 64bit NVIDIA Treiber
+	* http://www.nvidia.com/object/unix.html
+* Hashcat
+	* https://hashcat.net/files/hashcat-3.00.7z
+* 'ne Liste mit Wörtern
+
+---
+
+# Liste mit Wörtern?
+* Dictionary Attack mit Klartextwörtern
+* effizienter als Bruteforce bei großen Mengen
+* Archive mit Listen
+	* http://weakpass.com/lists
+	* https://github.com/danielmiessler/SecLists
+	* https://wiki.skullsecurity.org/Passwords
+	* https://crackstation.net/buy-crackstation-wordlist-password-cracking-dictionary.htm
+
+---
+
+# Hash-Kätzchen?
+* "World's fastest password cracker"
+* Free + Open Source 
+* Multi-Platform
+* hunderte unterstützte Algorithmen
+* tl;dr einzig wahre Software!
+
+---
+
+# Ablauf
+* AWS EC2 Instance erstellen
+* via SSH verbinden
+* ~~Treiber installieren~~
+* Hashcat herunterladen + entpacken
+* Wordlist laden
+* go!
+
+---
+
+# Ablauf #2
+Bruteforce (alphanumerisch lower/capital) auf MD5 mit 5 zeichen
+
+`$ hashcat64.bin -m 1500 hash.txt -a 3 -1 ?l?u?d ?1?1?1?1?1`
+
+Dictionary Attack auf SHA1
+
+`$ hashcat64.bin -m 1400 hashes200k rockyou.txt -o cracked.txt`
+
+---
+
+# Vergleich: Preise
+
+Kurzer Einblick in die Preise der Anbieter
+
+Vergleich zu GTX 970: ~300€ einmalig
+
+| Google (CPU) | Amazon (GPU) |
+|:-:|:-:|
+| ![](images/google.png) | ![](images/amazon.png) |
+|https://cloud.google.com/compute/pricing|https://aws.amazon.com/ec2/pricing/|
+
+---
+
+# Ergo: 
+* auf kurze Sicht: **ganz okay**
+* auf lange Sicht: **lieber Hardware kaufen**
+	* im Vergleich zu *n* EC2 Instances auf Dauer definitiv günstiger
+
+---
+
+# Vergleich: Leistung
+||GTX 1080| NVIDIA Grid|
+|:-:|:-:|:-:|
+|.right[MD5]|24943.1 MH/s|776.9 MH/s|
+|.right[SHA1]|8538.1 MH/s|700.1 MH/s|
+|.right[SHA512]|1071.1 MH/s|72592.4 kH/s|
+
+---
+
+# Quellen
+* https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40
+* https://hashcat.net/wiki/doku.php?id=hashcat
+* https://aws.amazon.com/ec2/pricing/
+* http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using_cluster_computing.html
+* https://hashcat.net/forum/thread-4143.html
+
+		</textarea>
+		<script src="assets/remark.js"></script>
+		<script>
+			var slideshow = remark.create({ ratio: '16:9' });
+		</script>
+	</body>
+</html>
